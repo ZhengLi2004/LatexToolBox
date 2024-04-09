@@ -1,8 +1,8 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:latextb/splash.dart';
+import 'package:latextb/Animations/splash.dart';
 
-import "homePage.dart";
+import "Pages/homePage.dart";
 
 void main() {
   runApp(const MyApp());
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         ), 
         splashTransition: SplashTransition.fadeTransition,
         backgroundColor: Colors.blue,
-        nextScreen: HomePage(title: "Home Page")),
+        nextScreen: HomePage()),
     );
   }
 }
