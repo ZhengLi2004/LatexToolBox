@@ -1,16 +1,6 @@
-# latextb
+# Latex 工具箱
 
-A new Flutter project.
+使用者请下载从相关网站下载到如下训练数据（或自行训练），并将同名文件放入如下所示的相对位置：
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+lib/Functions/FormulaOCR/nougat-latex-ocr-1.0.0/MData/model.safetensors
+lib/Functions/FormulaOCR/nougat-latex-ocr-1.0.0/MData/pytorch_model.bin
