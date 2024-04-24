@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:latextb/Animations/blur.dart';
+import 'package:latextb/Animations/onHover.dart';
+import 'package:latextb/Functions/FormulaOCR/FOCRPage.dart';
 
 class appPage extends StatelessWidget {
   const appPage({Key? key}) : super(key: key);
@@ -14,16 +16,28 @@ class appPage extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.green,
+          child: OnHover(
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(
+                    builder: (context) => FOCRPage(),
+                    ),
+                );
+              },
+              child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.green,
+              ),
+              height: 500.0, 
+              width: 500.0,
+              alignment: Alignment.center,
+              child: const Blur(theWidth: 500.0, theHeight: 500.0, theChild: Text("Formula OCR"))
+              ),
             ),
-            height: 500.0, 
-            width: 500.0,
-            alignment: Alignment.center,
-            child: const Blur(theWidth: 500.0, theHeight: 500.0, theChild: Text("Hello, World!"))
-            ),
+          ),
         ),
       ],
     )
