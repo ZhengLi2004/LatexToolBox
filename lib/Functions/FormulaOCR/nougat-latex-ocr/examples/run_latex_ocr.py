@@ -8,17 +8,16 @@ from transformers import VisionEncoderDecoderModel
 from transformers.models.nougat import NougatTokenizerFast
 from nougat_latex.util import process_raw_latex_code
 from nougat_latex import NougatLaTexProcessor
-
+import os
 
 def parse_option():
     parser = argparse.ArgumentParser(prog="nougat inference config", description="model archiver")
-    parser.add_argument("--pretrained_model_name_or_path", default="../MData")
-    parser.add_argument("--img_path", help="path to latex image segment", required=True)
+    parser.add_argument("--pretrained_model_name_or_path", default=os.path.abspath("MData"))
+#    parser.add_argument("--img_path", help="path to latex image segment", required=True)
     parser.add_argument("--device", default="gpu")
-    return parser.parse_args()
+    return parser.parse_args(args=[])
 
-
-def run_nougat_latex():
+def run_nougat_latex(img_path):
     args = parse_option()
     # device
     if args.device == "gpu":
@@ -27,6 +26,7 @@ def run_nougat_latex():
         device = torch.device("cpu")
 
     # init model
+    print(args.pretrained_model_name_or_path)
     model = VisionEncoderDecoderModel.from_pretrained(args.pretrained_model_name_or_path).to(device)
 
     # init processor
@@ -34,7 +34,7 @@ def run_nougat_latex():
     latex_processor = NougatLaTexProcessor.from_pretrained(args.pretrained_model_name_or_path)
 
     # run test
-    image = Image.open(args.img_path)
+    image = Image.open(img_path)
     if not image.mode == "RGB":
         image = image.convert('RGB')
 
@@ -59,8 +59,4 @@ def run_nougat_latex():
     sequence = sequence.replace(tokenizer.eos_token, "").replace(tokenizer.pad_token, "").replace(tokenizer.bos_token,
                                                                                                   "")
     sequence = process_raw_latex_code(sequence)
-    print(sequence)
-
-
-if __name__ == '__main__':
-    run_nougat_latex()
+    return sequence
