@@ -43,5 +43,5 @@ app.*.map.json
 /android/app/release
 
 # Training Data
-lib/Functions/FormulaOCR/nougat-latex-ocr-1.0.0/MData/model.safetensors
-lib/Functions/FormulaOCR/nougat-latex-ocr-1.0.0/MData/pytorch_model.bin
+lib/Functions/FormulaOCR/nougat-latex-ocr/MData/model.safetensors
+lib/Functions/FormulaOCR/nougat-latex-ocr/MData/pytorch_model.bin
