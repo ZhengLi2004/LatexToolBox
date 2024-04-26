@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:latextb/Functions/FormulaOCR/ControllerProvider.dart';
+import 'package:provider/provider.dart';
+import 'ControllerProvider.dart';
 
-import '../../Widgets/DropzoneWidget.dart';
+import 'DropzoneWidget.dart';
 
 class FOCRPage extends StatefulWidget {
   const FOCRPage({Key? key}) : super(key: key);
@@ -12,6 +15,17 @@ class FOCRPage extends StatefulWidget {
 }
 
 class _FOCRPageState extends State<FOCRPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    ControllerProvider.controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,11 +45,12 @@ class _FOCRPageState extends State<FOCRPage> {
             alignment: Alignment.center,
             padding: EdgeInsets.all(8.0),
             child: TextField(
-            minLines: 3,
-            maxLines: 3,
-            style: TextStyle(fontSize: 20),
-            decoration: InputDecoration(
-            border: OutlineInputBorder()
+              controller: ControllerProvider.controller,
+              minLines: 3,
+              maxLines: 3,
+              style: TextStyle(fontSize: 20),
+              decoration: InputDecoration(
+              border: OutlineInputBorder()
              ),
             ),
           ),
