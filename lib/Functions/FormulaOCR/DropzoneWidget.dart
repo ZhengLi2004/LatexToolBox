@@ -22,6 +22,7 @@ class DropzoneWidget extends StatefulWidget {
 class _DropzoneWidgetState extends State<DropzoneWidget> {
   final Set<XFile> files = {};
   bool isHovering = false;
+  // EEE
 
   @override
   Widget build(BuildContext context) {
