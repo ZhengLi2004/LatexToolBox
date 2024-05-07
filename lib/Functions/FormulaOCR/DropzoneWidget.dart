@@ -1,18 +1,18 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/widgets.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:latextb/Functions/FormulaOCR/ControllerProvider.dart';
-import "package:process_run/process_run.dart";
 import 'package:http/http.dart' as http;
-import 'FOCRPage.dart';
+import "package:latext/latext.dart";
+import 'package:latextb/Functions/FormulaOCR/Refresh.dart';
+
+import 'dart:convert';
+import 'dart:io' as io;
+import 'dart:ui' as ui;
+
+import 'package:provider/provider.dart';
 
 class DropzoneWidget extends StatefulWidget {
   @override
@@ -22,7 +22,6 @@ class DropzoneWidget extends StatefulWidget {
 class _DropzoneWidgetState extends State<DropzoneWidget> {
   final Set<XFile> files = {};
   bool isHovering = false;
-  // EEE
 
   @override
   Widget build(BuildContext context) {
@@ -33,26 +32,37 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
       child: Column(
         children: [
             Container(
-              height: window.physicalSize.height * 0.25,
+              height: MediaQuery.of(context).size.width * 0.2,
               child: Row(
                 children: [
                   Container(
-                    width: window.physicalSize.width * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.49,
                     decoration: BoxDecoration(
                       border: Border.all(),
                     ),
                     child: buildFiles(),
                   ),
+                  Expanded(child: Container()),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.49,
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                    ),
+                    child: Builder(
+                      builder: (context) => LaTexT(laTeXCode: Text(Provider.of<Refresh>(context).code, style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.red))),
+                    ),
+                  ),
                 ],
               ),
             ),
-            const SizedBox(height: 10),
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Container(
               height: 140,
               color: isHovering ? Colors.blue : Colors.green,
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: DottedBorder(
                 borderType: BorderType.RRect,
                 color: Colors.white,
@@ -78,12 +88,12 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.upload,
                       size: 40,
                       color: Colors.white,
                     ),
-                    Text(
+                    const Text(
                       "Drop files or images here",
                       style: TextStyle(
                         color: Colors.white,
@@ -93,15 +103,15 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                     const SizedBox(height: 10),
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.all(10.0),
-                        shape: RoundedRectangleBorder(),
+                        padding: const EdgeInsets.all(10.0),
+                        shape: const RoundedRectangleBorder(),
                         backgroundColor: colorButton,
                       ),
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.search,
                         size: 20,
                       ),
-                      label: Text(
+                      label: const Text(
                         "Choose Files or Images",
                         style: TextStyle(
                           color: Colors.white,
@@ -136,7 +146,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
   }
 
   Widget buildFiles() {
-    if (!files.isEmpty) {
+    if (files.isNotEmpty) {
       return SingleChildScrollView(
         child: Column(
           children: files.map(buildFile).toList(),
@@ -145,27 +155,26 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
     }
     else {
       return Container(
-        width: window.physicalSize.width * 0.4,
-        height: window.physicalSize.height * 0.25,
+        width: MediaQuery.of(context).size.width * 0.49,
+        height: MediaQuery.of(context).size.height * 0.25,
         color: Colors.blue.shade300,
-        child: Text(
+        child: const Text(
           "No Picture Processing",
           style: TextStyle(
             color: Colors.white,
           ),
         ),
       );
-    };
+    }
   }
 
   Widget buildFile(XFile file) {
-        return Image.file(
-        File(file.path),
-        width: window.physicalSize.width * 0.4,
-        fit: BoxFit.fitWidth,
-        );
+    return Image.file(
+      io.File(file.path),
+      width: MediaQuery.of(context).size.width * 0.49,
+      fit: BoxFit.fitWidth,
+    );
   }
-
     
   void check() async {
     const JsonDecoder decoder = JsonDecoder();
@@ -177,7 +186,10 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
       var response = await http.get(Uri.parse('http://127.0.0.1:8000/outputQueue'));
       object = decoder.convert(response.body);
 
+      ControllerProvider.controller.text += "\$\$";
       ControllerProvider.controller.text += object["Response"];
+      ControllerProvider.controller.text += "\$\$";
+      Provider.of<Refresh>(context, listen:false).refresh(ControllerProvider.controller.text);
     }
   }
 }
