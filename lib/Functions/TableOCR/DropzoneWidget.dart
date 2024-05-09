@@ -10,7 +10,6 @@ import 'package:latextb/Functions/FormulaOCR/Refresh.dart';
 
 import 'dart:convert';
 import 'dart:io' as io;
-import 'dart:ui' as ui;
 
 import 'package:provider/provider.dart';
 
@@ -34,29 +33,15 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
             Container(
               height: MediaQuery.of(context).size.width * 0.2,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.49,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     decoration: BoxDecoration(
                       border: Border.all(),
                     ),
                     child: buildFiles(),
                   ),
-                  Expanded(child: Container()),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.49,
-                    padding: const EdgeInsets.all(4.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                    ),
-                    child: SingleChildScrollView(
-                      child: Builder(
-                      builder: (context) {
-                        String text = Provider.of<Refresh>(context).code;
-                        return LaTexT(laTeXCode: Text(text, style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.red)), breakDelimiter: "\t",);
-                      }),
-                    ),
-                    ),
                 ],
               ),
             ),
@@ -186,13 +171,11 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
 
     for (var file in files) {
       var path = file.path.replaceAll('\\', '+');
-      await http.post(Uri.parse('http://127.0.0.1:8000/inputQueue/' + path));
+      await http.post(Uri.parse('http://127.0.0.1:8000/inputTable/' + path));
       var response = await http.get(Uri.parse('http://127.0.0.1:8000/outputQueue'));
       object = decoder.convert(response.body);
 
-      ControllerProvider.controller.text += "\$\$";
       ControllerProvider.controller.text += object["Response"];
-      ControllerProvider.controller.text += "\$\$";
 
       Provider.of<Refresh>(context, listen:false).refresh(ControllerProvider.controller.text);
     }

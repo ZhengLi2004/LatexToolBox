@@ -1,0 +1,16 @@
+Symbol,Description
+T,time-span influence factor
+w,edge weight as an influence indicato
+B,successor influence growth coefficient
+FP,individual overall influence indicator
+SIP,Self-influence indicator
+FIP,follower influence indicator
+"""sim(A, B)""",describing the similarity value between A and B
+Acv,sample mean dispersion indicator
+p,sample feature similarity value
+BIC,bayesian network information criterion
+Ci,residuals of linear regression fit
+T,lag time of artistic work dynamic influence
+DI,dynamic influencer indicator
+RD,time of music influence revolution
+""

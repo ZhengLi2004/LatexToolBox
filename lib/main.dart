@@ -1,6 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:latextb/Functions/FormulaOCR/ControllerProvider.dart';
+import 'package:latextb/Functions/ControllerProvider.dart';
 import 'package:latextb/Functions/FormulaOCR/Refresh.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +8,7 @@ import "Pages/homePage.dart";
 
 void main() {
   ControllerProvider.shell.run('''
-      python ocr_api.py
+      python uvicorn_api.py
   ''');
   
   runApp(const MyApp());

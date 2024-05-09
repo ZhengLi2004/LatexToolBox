@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:latextb/Functions/ControllerProvider.dart';
+import '../ControllerProvider.dart';
+import '../FormulaOCR/Refresh.dart';
 import 'package:provider/provider.dart';
-import "Refresh.dart";
-import 'DropzoneWidget.dart';
+import "DropzoneWidget.dart";
 
-class FOCRPage extends StatefulWidget {
-  const FOCRPage({Key? key}) : super(key: key);
+class TOCRPage extends StatefulWidget {
+  const TOCRPage({Key? key}) : super(key: key);
 
   @override
-  State<FOCRPage> createState() => _FOCRPageState();
+  State<TOCRPage> createState() => _TOCRPageState();
 }
 
-class _FOCRPageState extends State<FOCRPage> {
+class _TOCRPageState extends State<TOCRPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      title: const Text("Formula OCR"),
+      title: const Text("Table OCR"),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -35,8 +35,8 @@ class _FOCRPageState extends State<FOCRPage> {
               onChanged: (value) {
                 Provider.of<Refresh>(context, listen:false).refresh(value);
               },
-              minLines: 3,
-              maxLines: 3,
+              minLines: 6,
+              maxLines: 6,
               style: const TextStyle(fontSize: 20),
               decoration: const InputDecoration(
               border: OutlineInputBorder(),
