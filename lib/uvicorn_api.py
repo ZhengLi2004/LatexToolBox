@@ -1,9 +1,12 @@
+import os
+
 import uvicorn
 import signal
 import queue
 
 from fastapi import FastAPI
 from Functions.FormulaOCR.P2T.scripts.invoker import *
+from Functions.ImageUpscaler.Upscaler.upscaler import *
 
 app = FastAPI()
 q = queue.Queue()
@@ -25,6 +28,16 @@ def inputQueue(file_path: str):
 def inputTable(file_path: str):
     file_path = file_path.replace("+", "\\\\")
     q.put({"Response": table_OCR(file_path)})
+
+@app.post("/inputUpscale/{file_path}")
+def inputUpscale(file_path: str):
+    # extract document path
+    file_paths = file_path.split(".")
+    result = file_paths[0] + " Upscaled." + file_paths[1]
+    # upscale
+    inputFp = file_path.replace("+", "\\\\")
+    outputFp = result.replace("+", "\\\\")
+    q.put({"Response": upscaleMain(inputFp, outputFp, os.path.abspath(".\\Functions\\ImageUpscaler\\Upscaler\\model\\espcn_x4.pb"))})
 
 @app.post("/shutdown")
 def shutdown():
