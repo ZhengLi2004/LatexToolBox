@@ -10,7 +10,6 @@ import 'package:latextb/Functions/FormulaOCR/Refresh.dart';
 
 import 'dart:convert';
 import 'dart:io' as io;
-import 'dart:ui' as ui;
 
 import 'package:provider/provider.dart';
 
