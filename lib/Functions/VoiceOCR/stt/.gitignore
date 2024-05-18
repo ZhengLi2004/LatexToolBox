@@ -1,0 +1,12 @@
+venv
+.idea
+build
+dist
+models/models--Systran--faster-whisper-base
+*.log
+*.wav
+*.mp3
+*.spec
+*.exe
+*.zip
+stslib/__pycache__

@@ -21,7 +21,7 @@ class _OnHoverState extends State<OnHover> {
       onEnter: (event) => onEntered(true),
       onExit: (event) => onEntered(false),
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
         transform: transform,
         child: Transform(
           alignment: Alignment.center,

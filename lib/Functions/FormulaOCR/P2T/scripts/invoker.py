@@ -7,7 +7,6 @@ from pix2text.table_ocr import TableOCR
 import os
 from Functions.FormulaOCR.P2T.scripts import tably
 
-
 def formula_OCR(img_path):
     p2t = Pix2Text.from_config()
     out = p2t.recognize_formula(img_path)
@@ -35,4 +34,3 @@ def table_OCR(img_path):
             writer.writerow(re.sub('(,)(?=(?:[^"]|"[^"]*")*$)','|',i).split("|"))
 
     return tably.runner()
-

@@ -3,10 +3,14 @@ import 'package:desktop_drop/desktop_drop.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:latextb/Functions/ControllerProvider.dart';
 import 'package:http/http.dart' as http;
+import 'package:latextb/Functions/FormulaOCR/Refresh.dart';
 
 import 'dart:convert';
 import 'dart:io' as io;
+
+import 'package:provider/provider.dart';
 
 class DropzoneWidget extends StatefulWidget {
   @override
@@ -16,7 +20,6 @@ class DropzoneWidget extends StatefulWidget {
 class _DropzoneWidgetState extends State<DropzoneWidget> {
   final Set<XFile> files = {};
   bool isHovering = false;
-  String? upscaledPath;
 
   @override
   Widget build(BuildContext context) {
@@ -27,30 +30,17 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
       child: Column(
         children: [
             Container(
-              height: MediaQuery.of(context).size.width * 0.35,
+              height: MediaQuery.of(context).size.width * 0.2,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.49,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     decoration: BoxDecoration(
                       border: Border.all(),
                     ),
                     child: buildFiles(),
                   ),
-                  Expanded(child: Container()),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.49,
-                    padding: const EdgeInsets.all(4.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                    ),
-                    child: SingleChildScrollView(
-                      child: Builder(
-                      builder: (context) {
-                        return buildFile2(upscaledPath);
-                      }),
-                    ),
-                    ),
                 ],
               ),
             ),
@@ -119,7 +109,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                       onPressed: () async {
                         FilePickerResult? result = await FilePicker.platform.pickFiles(
                           type: FileType.custom,
-                          allowedExtensions: ['jpg', 'jpeg', 'png'],
+                          allowedExtensions: ['mp3'],
                         );
             
                         if (result != null) {
@@ -128,7 +118,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                             files.addAll(result.xFiles);
                             check();
                           });
-                        }; 
+                        }
                       },
                     )
                   ],
@@ -154,11 +144,10 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
     else {
       return Container(
         width: MediaQuery.of(context).size.width * 0.49,
-        height: MediaQuery.of(context).size.height * 0.35,
+        height: MediaQuery.of(context).size.height * 0.25,
         color: Colors.blue.shade300,
         child: const Text(
           "No Picture Processing",
-          textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
           ),
@@ -174,18 +163,6 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
       fit: BoxFit.fitWidth,
     );
   }
-
-  Widget buildFile2(String? path) {
-    if (path == null)
-      return Placeholder();
-    else {
-      return Image.file(
-        io.File(path),
-        width: MediaQuery.of(context).size.width * 0.49,
-        fit: BoxFit.fitWidth,
-      );
-    }
-  }
     
   void check() async {
     const JsonDecoder decoder = JsonDecoder();
@@ -193,13 +170,12 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
 
     for (var file in files) {
       var path = file.path.replaceAll('\\', '+');
-      await http.post(Uri.parse('http://127.0.0.1:8000/inputUpscale/' + path));
+      await http.post(Uri.parse('http://127.0.0.1:8000/inputVoice/' + path));
       var response = await http.get(Uri.parse('http://127.0.0.1:8000/outputQueue'));
       object = decoder.convert(response.body);
+      ControllerProvider.controller.text += object["Response"];
 
-      setState(() {
-        this.upscaledPath = object["Response"]; 
-      });
+      Provider.of<Refresh>(context, listen:false).refresh(ControllerProvider.controller.text);
     }
   }
 }

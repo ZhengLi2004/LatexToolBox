@@ -1,8 +1,9 @@
-import os
+import json
 
 import uvicorn
 import signal
 import queue
+import requests
 
 from fastapi import FastAPI
 from Functions.FormulaOCR.P2T.scripts.invoker import *
@@ -39,10 +40,23 @@ def inputUpscale(file_path: str):
     outputFp = result.replace("+", "\\\\")
     q.put({"Response": upscaleMain(inputFp, outputFp, os.path.abspath(".\\Functions\\ImageUpscaler\\Upscaler\\model\\espcn_x4.pb"))})
 
+@app.post("/inputVoice/{file_path}")
+def inputVoice(file_path: str):
+    file_path = file_path.replace("+", "\\\\")
+    url = "http://127.0.0.1:8001/api"
+    files = {"file": open(file_path, "rb")}
+    data = {"language": "en", "model": "base", "response_format": "text"}
+    response = requests.request("POST", url, data=data, files=files)
+    print(response.json().get("data"))
+    q.put({"Response": response.json().get("data")})
+
 @app.post("/shutdown")
 def shutdown():
-    pid = os.getpid()
-    os.kill(pid, signal.SIGINT)
+    try:
+        requests.post("http://127.0.0.1:8001/shutdown", timeout=1)
+    finally:
+        pid = os.getpid()
+        os.kill(pid, signal.SIGINT)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)

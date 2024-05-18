@@ -10,6 +10,10 @@ void main() {
   ControllerProvider.shell.run('''
       python uvicorn_api.py
   ''');
+
+  ControllerProvider.shell2.run('''
+      python start.py
+  ''');
   
   runApp(const MyApp());
 }

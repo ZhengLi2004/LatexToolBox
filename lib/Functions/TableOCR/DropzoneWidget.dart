@@ -5,7 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:latextb/Functions/ControllerProvider.dart';
 import 'package:http/http.dart' as http;
-import "package:latext/latext.dart";
 import 'package:latextb/Functions/FormulaOCR/Refresh.dart';
 
 import 'dart:convert';
@@ -119,7 +118,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                             files.addAll(result.xFiles);
                             check();
                           });
-                        }; 
+                        }
                       },
                     )
                   ],
