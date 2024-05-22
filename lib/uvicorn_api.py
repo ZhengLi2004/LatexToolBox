@@ -8,6 +8,7 @@ import requests
 from fastapi import FastAPI
 from Functions.FormulaOCR.P2T.scripts.invoker import *
 from Functions.ImageUpscaler.Upscaler.upscaler import *
+from Functions.Calculator.compuTex.computexInvoker import *
 
 app = FastAPI()
 q = queue.Queue()
@@ -49,6 +50,21 @@ def inputVoice(file_path: str):
     response = requests.request("POST", url, data=data, files=files)
     print(response.json().get("data"))
     q.put({"Response": response.json().get("data")})
+
+@app.post("/inputCalculatorExpand/{file_path}")
+def inputCalculatorExpand(file_path: str):
+    file_path = file_path.replace("`", "\\")
+    q.put({"Response": expandC(file_path)})
+
+@app.post("/inputCalculatorFactor/{file_path}")
+def inputCalculatorFactor(file_path: str):
+    file_path = file_path.replace("`", "\\")
+    q.put({"Response": factorC(file_path)})
+
+@app.post("/inputCalculatorSimplify/{file_path}")
+def inputCalculatorSimplify(file_path: str):
+    file_path = file_path.replace("`", "\\")
+    q.put({"Response": simplifyC(file_path)})
 
 @app.post("/shutdown")
 def shutdown():

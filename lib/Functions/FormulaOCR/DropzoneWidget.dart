@@ -52,7 +52,8 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                       child: Builder(
                       builder: (context) {
                         String text = Provider.of<Refresh>(context).code;
-                        return LaTexT(laTeXCode: Text(text, style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.red)), breakDelimiter: "\t",);
+                        String context1 = "\$\$" + text + "\$\$";
+                        return LaTexT(laTeXCode: Text(context1, style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.red)), breakDelimiter: "\t",);
                       }),
                     ),
                     ),
@@ -189,9 +190,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
       var response = await http.get(Uri.parse('http://127.0.0.1:8000/outputQueue'));
       object = decoder.convert(response.body);
 
-      ControllerProvider.controller.text += "\$\$";
       ControllerProvider.controller.text += object["Response"];
-      ControllerProvider.controller.text += "\$\$";
 
       Provider.of<Refresh>(context, listen:false).refresh(ControllerProvider.controller.text);
     }
