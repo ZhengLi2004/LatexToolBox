@@ -1,5 +1,3 @@
-import json
-
 import uvicorn
 import signal
 import queue

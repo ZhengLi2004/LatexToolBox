@@ -1,4 +1,4 @@
-from computex import *
+from Functions.Calculator.compuTex.module.computex import *
 
 def expandC(latex_expr):
     expr = parse_latex_extended(latex_expr)
