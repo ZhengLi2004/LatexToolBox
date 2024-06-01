@@ -144,12 +144,14 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
     else {
       return Container(
         width: MediaQuery.of(context).size.width * 0.49,
-        height: MediaQuery.of(context).size.height * 0.25,
+        height: MediaQuery.of(context).size.height * 0.3,
         color: Colors.blue.shade300,
+        alignment: Alignment.center,
         child: const Text(
           "No Picture Processing",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.red,
+            fontWeight: FontWeight.w900,
           ),
         ),
       );
@@ -160,6 +162,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
     return Image.file(
       io.File(file.path),
       width: MediaQuery.of(context).size.width * 0.49,
+      height: MediaQuery.of(context).size.height * 0.25,
       fit: BoxFit.fitWidth,
     );
   }

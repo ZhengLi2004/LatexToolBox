@@ -27,7 +27,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
       child: Column(
         children: [
             Container(
-              height: MediaQuery.of(context).size.width * 0.35,
+              height: MediaQuery.of(context).size.height * 0.5,
               child: Row(
                 children: [
                   Container(
@@ -54,7 +54,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                 ],
               ),
             ),
-            const SizedBox(height: 5),
+            SizedBox(height: 10,),
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Container(
@@ -152,15 +152,16 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
       );
     }
     else {
-      return Container(
+            return Container(
         width: MediaQuery.of(context).size.width * 0.49,
-        height: MediaQuery.of(context).size.height * 0.35,
+        height: MediaQuery.of(context).size.height * 0.5,
         color: Colors.blue.shade300,
+        alignment: Alignment.center,
         child: const Text(
           "No Picture Processing",
-          textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.red,
+            fontWeight: FontWeight.w900,
           ),
         ),
       );
@@ -171,17 +172,22 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
     return Image.file(
       io.File(file.path),
       width: MediaQuery.of(context).size.width * 0.49,
+      height: MediaQuery.of(context).size.height * 0.5,
       fit: BoxFit.fitWidth,
     );
   }
 
   Widget buildFile2(String? path) {
     if (path == null)
-      return Placeholder();
+      return Container(
+        width: MediaQuery.of(context).size.width * 0.49,
+        height: MediaQuery.of(context).size.height * 0.5,
+      );
     else {
       return Image.file(
         io.File(path),
         width: MediaQuery.of(context).size.width * 0.49,
+        height: MediaQuery.of(context).size.height * 0.5,
         fit: BoxFit.fitWidth,
       );
     }

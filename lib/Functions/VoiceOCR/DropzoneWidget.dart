@@ -82,7 +82,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                       color: Colors.white,
                     ),
                     const Text(
-                      "Drop files or images here",
+                      "Drop voice source here",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 15,
@@ -100,7 +100,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                         size: 20,
                       ),
                       label: const Text(
-                        "Choose Files or Images",
+                        "Choose Voice Source",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,
@@ -109,7 +109,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                       onPressed: () async {
                         FilePickerResult? result = await FilePicker.platform.pickFiles(
                           type: FileType.custom,
-                          allowedExtensions: ['mp3'],
+                          allowedExtensions: ['mp3', 'wav', 'flac', 'mp4', 'mov', 'mkv', 'avi', 'mpeg'],
                         );
             
                         if (result != null) {
@@ -144,12 +144,14 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
     else {
       return Container(
         width: MediaQuery.of(context).size.width * 0.49,
-        height: MediaQuery.of(context).size.height * 0.25,
+        height: MediaQuery.of(context).size.height * 0.3,
         color: Colors.blue.shade300,
+        alignment: Alignment.center,
         child: const Text(
-          "No Picture Processing",
+          "No Voice Processing",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.red,
+            fontWeight: FontWeight.w900,
           ),
         ),
       );

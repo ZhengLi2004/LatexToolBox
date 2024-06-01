@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:latext/latext.dart';
 import 'package:latextb/Functions/ControllerProvider.dart';
 import 'package:latextb/Functions/FormulaOCR/Refresh.dart';
@@ -82,6 +83,37 @@ class _CalculatorPageState extends State<CalculatorPage> {
                     ),
                   ),
                 ),
+                Row(
+            children: [
+              SizedBox(width: 10,),
+              ElevatedButton(
+                onPressed: () async {
+                  Clipboard.setData(ClipboardData(text: ControllerProvider.controller.text));
+                }, 
+                child: Text("Copy")
+              ),
+              SizedBox(width: 10,),
+              ElevatedButton(
+                onPressed: () async {
+                  ClipboardData? data =
+                    await Clipboard.getData(Clipboard.kTextPlain);
+                    if (data != null) {
+                      ControllerProvider.controller.text = data.text as String;
+                      Provider.of<Refresh>(context, listen:false).refresh(data.text as String);
+                    }
+                }, 
+                child: Text("Paste")
+              ),
+              SizedBox(width: 10,),
+              ElevatedButton(
+                onPressed: () async {
+                  ControllerProvider.controller.text = "";
+                  Provider.of<Refresh>(context, listen:false).refresh("");
+                }, 
+                child: Text("Clear")
+              ),
+            ],
+          ),
               ],
             ),
           ),
@@ -122,6 +154,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                     },
                     minLines: 6,
                     maxLines: 6,
+                    readOnly: true,
                     style: const TextStyle(fontSize: 20),
                     decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -130,23 +163,21 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 ),
                 Row(
                   children: [
-                    Expanded(child: Container()),
-                    DropdownMenu<mode>(
-                      initialSelection: mode.simplify,
-                      requestFocusOnTap: true,
-                      label: const Text("Calculate Mode"),
-                      onSelected: (mode? mode) {
+                    SizedBox(width: 10,),
+                    ElevatedButton(
+                      onPressed: () async {
+                        Clipboard.setData(ClipboardData(text: localController.text));
+                      }, 
+                      child: Text("Copy")
+                    ),
+                    SizedBox(width: 10,),
+                    ElevatedButton(
+                      onPressed: () async { 
                         setState(() {
-                          selectedMode = mode;
+                          localController.text = "";
                         });
-                      },
-                      dropdownMenuEntries: mode.values
-                        .map<DropdownMenuEntry<mode>>((mode m) {
-                          return DropdownMenuEntry<mode>(
-                            value: m,
-                            label: m.label,
-                          );
-                        }).toList(),
+                      }, 
+                      child: Text("Clear")
                     ),
                     SizedBox(width: 10.0,),
                     ElevatedButton(
@@ -167,15 +198,33 @@ class _CalculatorPageState extends State<CalculatorPage> {
                         var response = await http.get(Uri.parse('http://127.0.0.1:8000/outputQueue'));
                         Map<String, dynamic> object = decoder.convert(response.body);
 
-                        localController.text += object["Response"];
+                        localController.text = object["Response"];
 
                         setState(() {});
                       }, 
                       child: Text("Generate")
                     ),
                     Expanded(child: Container()),
+                    DropdownMenu<mode>(
+                      initialSelection: mode.simplify,
+                      requestFocusOnTap: true,
+                      label: const Text("Calculate Mode"),
+                      onSelected: (mode? mode) {
+                        setState(() {
+                          selectedMode = mode;
+                        });
+                      },
+                      dropdownMenuEntries: mode.values
+                        .map<DropdownMenuEntry<mode>>((mode m) {
+                          return DropdownMenuEntry<mode>(
+                            value: m,
+                            label: m.label,
+                          );
+                        }).toList(),
+                    ),
+                    SizedBox(width: 10,),
                   ],
-                )
+                ),
               ],
             ),
           ),

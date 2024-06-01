@@ -192,4 +192,3 @@ evaluated_latex_expr = uniformize_matrix_delimiters(evaluated_latex_expr,
 #    print(f"{latex_expr} = {evaluated_latex_expr}", end="")
 #else:
 #    print(f"{evaluated_latex_expr}", end="")
-print(f'{evaluated_latex_expr}', end="")

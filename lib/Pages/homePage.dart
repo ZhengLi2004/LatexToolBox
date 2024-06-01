@@ -52,16 +52,37 @@ class _MyHomePageState extends State<HomePage> {
           ),
         ),
         ),
-      Container(
-        height: MediaQuery.of(context).size.height - appWindow.titleBarHeight,
-      child: Scaffold(
-          appBar: AppBar(
+        Container(
+          height: MediaQuery.of(context).size.height - appWindow.titleBarHeight,
+          child: Scaffold(
+            appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             title: const Text("Home Page"),
           ),
           drawer: const NavigationDrawer(),
+          body: Container(
+            alignment: Alignment.center,
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Welcome to Latex Toolbox beta v1.0.0!",
+                  style: TextStyle(
+                    fontSize: 40,
+                    shadows: <Shadow>[
+                      Shadow(
+                      offset: Offset(2.0, 0.0),
+                      blurRadius: 2.0,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ),
         ),
-        )
       ],
     );
   }
@@ -71,17 +92,19 @@ class NavigationDrawer extends StatelessWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Drawer(
-    child: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          buildHeader(context),
-          buildMenuItems(context),
-        ],
-      ),
-    ),
-  );
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: SingleChildScrollView(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              buildHeader(context),
+              buildMenuItems(context),
+            ],
+          ),
+        ),
+      );
+  }
 
   Widget buildHeader(BuildContext context) => Container(
     padding: EdgeInsets.only(
